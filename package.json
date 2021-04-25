@@ -1,0 +1,22 @@
+{
+  "name": "edmis-node-server",
+  "version": "1.0.0",
+  "description": "Electronic document management information system. NodeJS server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/f-honcharenko/EDMIS-node-server.git"
+  },
+  "keywords": [
+    "EDMIEDMIS"
+  ],
+  "author": "Honcharenko F.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/f-honcharenko/EDMIS-node-server/issues"
+  },
+  "homepage": "https://github.com/f-honcharenko/EDMIS-node-server#readme"
+}
