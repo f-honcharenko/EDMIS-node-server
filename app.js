@@ -15,6 +15,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api', routes)
 
+app.use(function (req, res, next) {
+    return res.status(404).send("Not Found");
+});
+
 app.listen(port, host, () => {
     console.log(`Server listens http://${host}:${port}`)
 });
