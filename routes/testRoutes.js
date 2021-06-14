@@ -23,4 +23,4 @@ router
     .put(TestController.pingPUT)
     .delete(TestController.pingDELETE);
 
-module.exports = router
+module.exports = router;

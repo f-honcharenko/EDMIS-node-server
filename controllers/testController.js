@@ -1,7 +1,11 @@
+// const UsersService = require('../services/uposers.service');
+
 class TestController {
     async pingPOST(req, res) {
         console.log("Ping. POST.");
-        return res.status(200).send({ message: 'Pong!' });
+        return res.status(200).send({
+            message: 'Pong!'
+        });
     }
     async pingGET(req, res) {
         console.log("Ping. GET.");
@@ -17,4 +21,4 @@ class TestController {
     }
 }
 
-module.exports = new TestController()
+module.exports = new TestController();
