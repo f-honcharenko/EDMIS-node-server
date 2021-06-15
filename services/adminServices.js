@@ -1,52 +1,95 @@
 const admin = require('../models/admin');
-const user = require('../models/admin');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 class AdminService {
-    getUsers() {
+    getAdmin(data) {
         return new Promise((res, rej) => {
-            fs.readFile('data.json', (err, data) => {
-                if (err) {
-                    return res(false)
-                }
-                return res(JSON.parse(data))
-            })
-        })
-    }
+            admin.findOne({
+                login: data.login
+            }, (errF, resF) => {
+                console.log(resF);
 
-    createUser(data) {
-        return new Promise((res, rej) => {
-            fs.writeFile(
-                'data.json',
-                JSON.stringify(data),
-                (err, response) => {
-                    if (err) return res(false)
-
+                if (errF) {
                     return res({
-                        message: 'User created.'
+                        message: "Undefined error.",
+                        details: errF,
+                        code: 520
                     })
                 }
-            )
+                if (resF != null) {
+                    return res({
+                        message: "Done. User finded.",
+                        details: resF,
+                        code: 200
+                    })
+                } else {
+                    return res({
+                        message: "User do not finded.",
+                        details: resF,
+                        code: 404
+                    })
+                }
+            });
         })
     }
-    create(person) {
+    createAdmin(data) {
         console.log("Start adnimServices.CREATE");
         let candidate = new admin({
-            login: person.login,
-            password: person.password,
+            login: data.login,
+            password: data.password,
+            fname: data.fname,
+            lname: data.lname
         });
         // console.log(candidate);
         return new Promise((res, rej) => {
             candidate.save((errS, resS) => {
-                if (errS) return res({
-                    message: "Error. Cannot add user in DB.",
-                    details: errS
-                });
+                if (errS) {
+                    return res({
+                        message: "Error. Cannot add user in DB.",
+                        details: errS,
+                        code: 409
+                    });
+                };
                 return res({
-                    message: "Admin created"
+                    message: "Admin created.",
+                    details: resS,
+                    code: 201
                 });
             });
         });
     }
+    createAdminToken(data) {
+        return new Promise((res, rej) => {
+            jwt.sign(data, config.jwt.secret, {
+                // algorithm: 'RS256'
+            }, function (err, token) {
+                if (err) {
+                    console.log(err);
+                    return res({
+                        message: "Token generation error.",
+                        details: err,
+                        code: 500
+                    })
+                }
+                if (token == null) {
+                    return res({
+                        message: "Token was not generation.",
+                        details: null,
+                        code: 500
+                    })
+                }
+                return res({
+                    message: "Succses!",
+                    details: null,
+                    token: token,
+                    code: 200
+                })
+            });
+        });
+
+    }
+
 
     updateUser(data) {
         return new Promise((res, rej) => {
@@ -63,7 +106,6 @@ class AdminService {
             )
         })
     }
-
     deleteUser(data) {
         return new Promise((res, rej) => {
             fs.writeFile(
