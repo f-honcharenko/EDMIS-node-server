@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const AdminController = require('../controllers/adminController');
-// const UsersService = require('../services/users.service');
 
 router
     .route('/register')
@@ -9,5 +8,8 @@ router
 router
     .route('/login')
     .post(AdminController.login);
+router
+    .route('/delete')
+    .delete(AdminController.delete);
 
 module.exports = router;

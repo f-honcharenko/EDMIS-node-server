@@ -8,8 +8,6 @@ class AdminService {
             admin.findOne({
                 login: data.login
             }, (errF, resF) => {
-                console.log(resF);
-
                 if (errF) {
                     return res({
                         message: "Undefined error.",
@@ -34,14 +32,12 @@ class AdminService {
         })
     }
     createAdmin(data) {
-        console.log("Start adnimServices.CREATE");
         let candidate = new admin({
             login: data.login,
             password: data.password,
             fname: data.fname,
             lname: data.lname
         });
-        // console.log(candidate);
         return new Promise((res, rej) => {
             candidate.save((errS, resS) => {
                 if (errS) {
@@ -62,19 +58,46 @@ class AdminService {
     createAdminToken(data) {
         return new Promise((res, rej) => {
             jwt.sign(data, config.jwt.secret, {
-                // algorithm: 'RS256'
-            }, function (err, token) {
-                if (err) {
-                    console.log(err);
+                    // algorithm: 'RS256'
+                },
+                function (err, token) {
+                    if (err) {
+                        return res({
+                            message: "Token generation error.",
+                            details: err,
+                            code: 500
+                        })
+                    }
+                    if (token == null) {
+                        return res({
+                            message: "Token was not generation.",
+                            details: null,
+                            code: 500
+                        })
+                    }
                     return res({
-                        message: "Token generation error.",
+                        message: "Succses!",
+                        details: null,
+                        token: token,
+                        code: 200
+                    })
+                });
+        });
+
+    }
+    verifiyAdminToken(token) {
+        return new Promise((res, rej) => {
+            jwt.verify(token, config.jwt.secret, function (err, decoded) {
+                if (err) {
+                    return res({
+                        message: "Token decoding error.",
                         details: err,
                         code: 500
                     })
                 }
-                if (token == null) {
+                if (decoded == "undefined") {
                     return res({
-                        message: "Token was not generation.",
+                        message: "undefined data token.",
                         details: null,
                         code: 500
                     })
@@ -82,15 +105,43 @@ class AdminService {
                 return res({
                     message: "Succses!",
                     details: null,
-                    token: token,
+                    data: decoded,
                     code: 200
                 })
             });
         });
 
     }
+    deleteAdmin(login) {
+        return new Promise((res, rej) => {
+            admin.deleteOne({
+                login: login
+            }, (errD, resD) => {
 
+                if (errD) {
+                    return res({
+                        message: "Undefined error.",
+                        details: errF,
+                        code: 520
+                    })
+                }
+                if (resD == null) {
+                    return res({
+                        message: "User do not finded.",
+                        details: resD,
+                        code: 404
+                    })
+                } else {
+                    return res({
+                        message: "User succsesduly deleted.",
+                        details: resD,
+                        code: 200
+                    })
+                }
+            });
+        });
 
+    }
     updateUser(data) {
         return new Promise((res, rej) => {
             fs.writeFile(
