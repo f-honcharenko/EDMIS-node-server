@@ -121,7 +121,7 @@ class AdminService {
                 if (errD) {
                     return res({
                         message: "Undefined error.",
-                        details: errF,
+                        details: errD,
                         code: 520
                     })
                 }
@@ -142,35 +142,35 @@ class AdminService {
         });
 
     }
-    updateUser(data) {
+    updateAdmin(data) {
         return new Promise((res, rej) => {
-            fs.writeFile(
-                'data.json',
-                JSON.stringify(data),
-                (err, response) => {
-                    if (err) return res(false)
+            admin.updateOne({
+                    login: data.login
+                },
+                data, (errU, resU) => {
 
-                    return res({
-                        message: 'User updated.'
-                    })
-                }
-            )
-        })
-    }
-    deleteUser(data) {
-        return new Promise((res, rej) => {
-            fs.writeFile(
-                'data.json',
-                JSON.stringify(data),
-                (err, response) => {
-                    if (err) return res(false)
-
-                    return res({
-                        message: 'User deleted.'
-                    })
-                }
-            )
-        })
+                    if (errU) {
+                        return res({
+                            message: "Undefined error.",
+                            details: errU,
+                            code: 520
+                        })
+                    }
+                    if (resU == null) {
+                        return res({
+                            message: "User do not finded.",
+                            details: resU,
+                            code: 404
+                        })
+                    } else {
+                        return res({
+                            message: "User succsesduly updated.",
+                            details: resU,
+                            code: 200
+                        })
+                    }
+                });
+        });
     }
 }
 

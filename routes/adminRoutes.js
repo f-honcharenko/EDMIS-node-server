@@ -9,6 +9,9 @@ router
     .route('/login')
     .post(AdminController.login);
 router
+    .route('/update')
+    .post(AdminController.update);
+router
     .route('/delete')
     .delete(AdminController.delete);
 
