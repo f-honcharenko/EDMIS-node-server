@@ -15,7 +15,8 @@ mongoose.connect(config.mongo.link, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    poolSize: 4
 });
 
 app.use(cors());

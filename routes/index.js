@@ -1,12 +1,12 @@
 //REQUIRES
 const express = require('express');
-const testRoutes = require('./testRoutes');
-const adminRoutes = require('./adminRoutes');
+const userRoutes = require('./userRoutes');
+const messageRoutes = require('./messageRoutes');
 //REQUIRES
 
 const router = express.Router();
 
-router.use('/tests', testRoutes);
-router.use('/admin', adminRoutes);
+router.use('/user', userRoutes);
+router.use('/msg', messageRoutes);
 
 module.exports = router;

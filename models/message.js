@@ -5,28 +5,23 @@ const {
 } = require('mongoose');
 
 
-const adminSchema = new Schema({
-    login: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    fname: {
+const messageSchema = new Schema({
+    sender: {
         type: String,
         required: true,
     },
-    lname: {
+    recepient: {
         type: String,
         required: true,
     },
-    password: {
+    content: {
         type: String,
         required: true,
     }
 }, {
-    collection: "adminUsers"
+    collection: "messages"
 }, {
     timestamps: true
 });
 
-module.exports = model('Admin', adminSchema);
+module.exports = model('Message', messageSchema);
